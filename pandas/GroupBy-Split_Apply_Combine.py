@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import os
+import matplotlib.pyplot as plt
+sns.set()
 os.system('clear')
 # GroupBy: Split, Apply, Combine
 # The split step involves breaking up and grouping a DataFrame depending on the value of the specified key.
@@ -149,3 +151,75 @@ print()
 births = pd.read_csv(
     "https://raw.githubusercontent.com/jakevdp/data-CDCbirths/master/births.csv")
 print(births.head())
+print()
+
+# we will use the built-in plotting tools in Pandas to visualize the total number of births by year
+births.pivot_table('births', index='year',
+                   columns='gender', aggfunc='sum').plot()
+plt.ylabel('total births per year')
+# plt.show() # commented it out to prevent the execution.
+
+
+# We start by cleaning the data a bit, removing outliers caused by mistyped dates
+# (e.g., June 31st) or missing values (e.g., June 99th).
+# One easy way to remove these all at once is to cut outliers;
+# we’ll do this via a robust sigma-clipping operation
+percentiles = np.percentile(births['births'], [25, 50, 75])
+
+# Median of the births
+med = percentiles[1]
+
+# We have calculated the standard deviation
+standard_deviation = 0.74 * (percentiles[2]-percentiles[0])
+
+# We have selected only those records in which births greater than median - 5 * standard deviation
+# and births less than median + 5 * standard deviation.
+births = births.query(
+    "(births > @med - 5 * @standard_deviation) & (births < @med + 5 * @standard_deviation)")
+
+# Converting the births['day'] to int type
+births['day'] = births['day'].astype(int)
+
+# Finally, we can combine the day, month, and year to create a Date index.
+births.index = pd.to_datetime(
+    (10000*births['year']+100*births['month']+births['day']), format='%Y%m%d')
+births['dayofweek'] = births.index.dayofweek
+
+# Adding the decade column in the births dataset
+births['decade'] = 10 * (births['year']//10)
+
+# Using this we can plot births by weekday for several decades
+births.pivot_table('births', index='dayofweek',
+                   columns='decade', aggfunc='mean').plot()
+
+plt.xticks(range(7))
+# This line sets the positions of the ticks on the x-axis.
+# Range(7) generates numbers: 0, 1, 2, 3, 4, 5, 6
+# So matplotlib creates 7 tick positions on the x-axis.
+# 0   1   2   3   4   5   6
+# |   |   |   |   |   |   |
+# This is useful when your data represents 7 days of the week.
+
+plt.gca().set_xticklabels(['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'])
+# plt.gca() ==>> gca = Get Current Axes
+# means: "Give me the current plot's axis so I can change its settings."
+# set_xticklabels([...]) ==>> This function replaces the numeric tick labels with custom labels.
+# Instead of:
+#  0    1   2    3    4   5   6
+# you will see:
+# Mon Tues Wed Thurs Fri Sat Sun
+
+# ylabel is used to set the label of y axis.
+plt.ylabel('mean births by day')
+print(births.head())
+# plt.show() #Commented to Prevent the execution.
+
+
+# Another interesting view is to plot the mean number of births by the day of the year.
+# Let’s first group the data by month and day separately:
+birth_by_day = births.pivot_table(
+    'births', index=[births.index.month, births.index.day])
+
+# let’s turn these months and days into a date by associating them with a dummy year variable.
+birth_by_day.index = [pd.to_datetime((2012, month, day), format='%m%d')
+                      for (month, day) in birth_by_day.index]

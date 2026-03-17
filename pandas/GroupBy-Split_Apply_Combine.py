@@ -213,13 +213,3 @@ plt.gca().set_xticklabels(['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'])
 plt.ylabel('mean births by day')
 print(births.head())
 # plt.show() #Commented to Prevent the execution.
-
-
-# Another interesting view is to plot the mean number of births by the day of the year.
-# Let’s first group the data by month and day separately:
-birth_by_day = births.pivot_table(
-    'births', index=[births.index.month, births.index.day])
-
-# let’s turn these months and days into a date by associating them with a dummy year variable.
-birth_by_day.index = [pd.to_datetime((2012, month, day), format='%m%d')
-                      for (month, day) in birth_by_day.index]

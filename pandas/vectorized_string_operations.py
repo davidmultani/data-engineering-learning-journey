@@ -53,9 +53,3 @@ df = pd.DataFrame({'names': names,
                    'info': ['B|C|D', 'A|C', 'D|C', 'C|D', 'B|D', 'A|B|C']})
 print(df['info'].str.get_dummies('|'))
 print()
-
-
-# Example : Recipe Database
-url = "http://openrecipes.s3.amazonaws.com/recipeitems-latest.json.gz"
-recipes = pd.read_json(url, compression="gzip", lines=True)
-print(recipes.head())

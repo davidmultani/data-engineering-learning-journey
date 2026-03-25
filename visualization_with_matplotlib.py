@@ -225,5 +225,107 @@ x = np.linspace(0, 10, 100)
 
 ### -- Scatter plot with plt.scatter() -- ###
 # A more powerful function for scatter plot is plt.scatter() which works similar to plt.plot().
-plt.scatter(x, np.sin(x), marker='o')
+#       plt.scatter(x, np.sin(x), marker='o')
+#       plt.show()
+
+# A primary difference between plt.plot() function and plt.scatter() function is -
+# -- The plt.scatter() allows more control over the individual points(size, face color, edge, color, etc).
+# -- We can use the alpha to control the transparency level in the plot.
+
+# plt.plot() is more efficient than plt.scatter() for large datasets -
+# Reason -
+# In the plt.scatter(), each point has to be rendered again and again which adds overhead. while,
+# for plt.plot(), the appearance of points is done only once for the entire dataset.
+
+
+### -- Basic Errorbars -- ###
+#       dy = 0.8
+
+#       np.random.randn(100) generates 100 random values from a normal (Gaussian) distribution
+#       y = np.sin(x) + dy * np.random.randn(100)
+#       plt.errorbar(x, y, yerr=dy, fmt='.k')
+#       plt.show()
+
+### -- Density and Contour Plots -- ###
+# To plot the three-dimensional data into two dimensions.
+# There are three matplotlib functions -
+# 1. plt.contour for contour plots
+# 2. plt.contourf for filled contour plots
+# 3. plt.imshow for showing images
+
+#       def cordinates(x, y):
+#         return np.sin(x) ** 10 + np.cos(10 + y * x) * np.cos(x)
+
+
+# Example -
+#       y = np.linspace(0, 10, 100)
+#       X, Y = np.meshgrid(x, y)
+#       Z = cordinates(X, Y)
+#       plt.contour(X, Y, Z, cmap='RdGy') # cmap is used to color code the lines
+#       plt.contourf(X, Y, Z, 20, cmap='RdGy') # contourf is used to blend the lines in the plot
+#       plt.colorbar() # It creates a additional axis(bar) with the labeled color information.
+#       plt.show()
+
+## -- Example of histogram -- ##
+#       data = np.random.randn(1000)
+#       plt.hist(data)
+#       plt.show()
+# hist() function provides the options to tune both the calculations and the display -
+#       plt.hist(data, bins=30, alpha=0.5,
+#               histtype='stepfilled', color='steelblue', edgecolor=None)
+#       plt.show()
+
+# Example of creating multiple transparent histogram overlaping each other -
+# We will store the options for plt.hist() function in the kwargs as dictionary for reusability.
+#       x1 = np.random.normal(0, 0.8, 1000)
+#       x2 = np.random.normal(-2, 1, 1000)
+#       x3 = np.random.normal(3, 2, 1000)
+#       kwargs = dict(histtype='stepfilled', alpha=0.3, bins=40)
+#       plt.hist(x1, **kwargs)
+#       plt.hist(x2, **kwargs)
+#       plt.hist(x3, **kwargs)
+#       plt.show()
+
+# To count the number of points in a given histogram, we can use np.histogram -
+# Example -
+#       data = np.random.randn(1000)
+#       counts, bin_edges = np.histogram(data, bins=5)
+#       print(counts)
+
+## -- plt.hist2d: Two-dimensional histogram -- ##
+# Example -
+#       mean = [0, 0]
+#       cov = [[0, 1], [1, 2]]
+#       x, y = np.random.multivariate_normal(mean, cov, 10000).T
+#       plt.hist2d(x, y, bins=40, cmap='Blues')
+#       plt.colorbar().set_label('counts in bin')
+#       plt.show()
+
+## -- plt.hexbin: Hexagonal binnings -- ##
+# It represents a two-dimensional dataset binned within a grid of hexagons
+#       mean = [0, 0]
+#       cov = [[0, 1], [1, 2]]
+#       x, y = np.random.multivariate_normal(mean, cov, 10000).T
+#       plt.hexbin(x, y, bins=40, gridsize=40, cmap='Blues')
+#       plt.colorbar().set_label('counts in bin')
+#       plt.show()
+
+### --- Customizing Plot Legends --- ###
+# First we will create the simple legend using ax.legend() function.
+ax = plt.subplot()
+# Their is a difference between plt.subplot and plt.subplots.
+# The subplot only return one argument while subplot returns the 2 arguments.
+# Example of subplot - ax = plt.subplot() # returned one argument
+# Example of subplots - fig, ax = plt.subplots() # returned two arguments.
+ax.plot(x, np.sin(x), linestyle='-', label='sin(x)')
+ax.plot(x, np.cos(x), linestyle='--', label='cos(x)')
+ax.set_xlabel('x values')
+ax.set_ylabel('sin(x) values')
+ax.set_title('relationship between x and sin(x)')
+ax.axis('equal')
+
+# loc to specify the labels location and ncol for number of columns(sin(x) in one col and cos(x) in other)
+# we can also place the labels inside the box using fancybox and can give shadow
+ax.legend(loc='lower center', ncol=2, fancybox=True,
+          shadow=True, framealpha=1, borderpad=1)
 plt.show()

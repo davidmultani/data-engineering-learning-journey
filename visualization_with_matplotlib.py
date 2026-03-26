@@ -312,20 +312,104 @@ x = np.linspace(0, 10, 100)
 
 ### --- Customizing Plot Legends --- ###
 # First we will create the simple legend using ax.legend() function.
-ax = plt.subplot()
+#       ax = plt.subplot()
 # Their is a difference between plt.subplot and plt.subplots.
 # The subplot only return one argument while subplot returns the 2 arguments.
 # Example of subplot - ax = plt.subplot() # returned one argument
 # Example of subplots - fig, ax = plt.subplots() # returned two arguments.
-ax.plot(x, np.sin(x), linestyle='-', label='sin(x)')
-ax.plot(x, np.cos(x), linestyle='--', label='cos(x)')
-ax.set_xlabel('x values')
-ax.set_ylabel('sin(x) values')
-ax.set_title('relationship between x and sin(x)')
-ax.axis('equal')
+#       ax.plot(x, np.sin(x), linestyle='-', label='sin(x)')
+#       ax.plot(x, np.cos(x), linestyle='--', label='cos(x)')
+#       ax.set_xlabel('x values')
+#       ax.set_ylabel('sin(x) values')
+#       ax.set_title('relationship between x and sin(x)')
+#       ax.axis('equal')
 
 # loc to specify the labels location and ncol for number of columns(sin(x) in one col and cos(x) in other)
-# we can also place the labels inside the box using fancybox and can give shadow
-ax.legend(loc='lower center', ncol=2, fancybox=True,
-          shadow=True, framealpha=1, borderpad=1)
+# we can also place the labels inside the box using (fancybox=True) and can give shadow (shadow=True)
+#       ax.legend(loc='lower center', ncol=2, fancybox=True,
+#                 shadow=True, framealpha=1, borderpad=1)
+#       plt.show()
+
+### --- Customizing Colorbars --- ###
+# a colorbar is a separate axes that can provide a key for the meaning of colors in a plot.
+# A simple colorbar can be created with the plt.colorbar() function.
+# We can specify the colormap using cmap argument to the plotting function that is creating the visualization.
+
+## -- Choosing the colormap -- ##
+# Their are mainly three categories of colormaps:
+
+# 1. Sequential colormaps -
+# -- These consists of one continuous sequence of colors. example - binary or viridis.
+
+# 2. Divergent colormaps -
+# -- These usually contains two distinct colors which show positive and negative deviations from a mean.
+# -- (e.g - RdGy,BuRd)
+
+# 3. Qualitative colormaps -
+# -- These mix colors with no particular sequence. (e.g - rainbow or jet)
+
+### --- Multiple Subplots --- ###
+# subplots are groups of smaller axes that can exist together within a single figure.
+# These subplots might be insets, grids of plots, or other more complicated layouts.
+
+## -- plt.axes: Subplots by Hand -- ##
+# By default this creates a standard axes object that fills the entire figure.
+
+# plt.axes() takes optional arguments -
+# It is a list of four numbers in the figure coordinate system.
+# These numbers represent [bottom,left,width,height] in the figure coordinate system.
+# It ranges from 0 at the bottom left of the figure to 1 at the top right of the figure.
+# Exmple -
+#   plt.axes() # Standard axes
+#   plt.axes([0.65,0.65,0.2,0.2]) # It will create an inset axes at the top-right corner.
+#   plt.show()
+
+# Similarly, In Object-Oriented Interface we can use fig.add_axes()
+# Example - We will create a two vertically stacked axes.
+#       fig = plt.figure()
+#       ax1 = fig.add_axes([0.1, 0.5, 0.8, 0.4], ylim=(-1.2, 1.2)
+#                          )  # creating the top axes
+#       ax2 = fig.add_axes([0.1, 0.1, 0.8, 0.4], ylim=(-1.2, 1.2)
+#             #                  )  # creating the bottom axes
+#       ax1.plot(x, np.sin(x)) # plotting the top axes
+#       ax2.plot(x, np.cos(x)) # plotting the bottom axes
+#       plt.show()
+
+## -- plt.subplot: Simple Grids of Subplots -- ##
+# If we want to align multiple subplot of rows and columns in one axes then -
+# We can use the plt.subplot() function.
+# The subplot takes 3 integer arguments -
+# -- the number of rows, the number of columns and the index of the plot
+#       for i in range(1, 7):
+#           plt.subplot(2, 3, i)
+#           plt.text(0.5, 0.5, str((2, 3, i)), fontsize=18, ha='center')
+# 0.5,0.5 is the location of the text in the subplot and str((2,3,i) is the text)
+#       plt.show()
+
+# To adjust the spacing between the plots - we can use plt.subplots_adjust() function.
+# we will use hspace and wspace arguments of plt.subplots_adjust.
+# By specifing the spacing along the height and width of the figure.
+# Example -
+#       fig = plt.figure()
+#       fig.subplots_adjust(hspace=0.4, wspace=0.4)
+#       for i in range(1, 7):
+#           ax = fig.add_subplot(2, 3, i)
+#           ax.text(0.5, 0.5, str((2, 3, i)), fontsize=18, ha='center')
+#       plt.show()
+
+### --- plt.subplots: The Whole Grid in One Go --- ###
+# The plt.subplots is easier to use
+# Rather than creating a single subplot,
+# this function creates a full grid of subplots in a single line and return numPy array.
+# By specifying the sharex and sharey we have automatically removed inner labels of grid.
+# Example -
+#       fig, ax = plt.subplots(2, 3, sharex='col', sharey='row')
+#       plt.show()
+
+# Now we will label the subplots using standard array indexing notation -
+# axes are in a two dimensional array, indexed by [row, col]
+fig, ax = plt.subplots(2, 3, sharex='col', sharey='row')
+for i in range(2):
+    for j in range(3):
+        ax[i, j].text(0.5, 0.5, str((i, j)), fontsize=18, ha='center')
 plt.show()

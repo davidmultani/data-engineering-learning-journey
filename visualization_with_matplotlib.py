@@ -497,8 +497,22 @@ x = np.linspace(0, 10, 100)
 #       plt.show()
 # To specify the maximum number of ticks , We can use plt.MaxNLocator()
 # Example -
-fig, ax = plt.subplots(4, 4, sharex=True, sharey=True)
-for axi in ax.flat:
-    axi.xaxis.set_major_locator(plt.MaxNLocator(3))
-    axi.yaxis.set_major_locator(plt.MaxNLocator(3))
-plt.show()
+#       fig, ax = plt.subplots(4, 4, sharex=True, sharey=True)
+#       for axi in ax.flat:
+#           axi.xaxis.set_major_locator(plt.MaxNLocator(3))
+#           axi.yaxis.set_major_locator(plt.MaxNLocator(3))
+#       plt.show()
+
+### --- Fancy Ticks Formats --- ###
+# plt.MultipleLocator(value) -
+# -- it locates ticks at a multiple of the number you provide.
+
+# plt.FuncFormatter(format_function) -
+# -- it accepts a user defined function giving fine-grained control over the tick outputs.
+# Example - ax.xaxis.set_major_formatter(plt.FuncFormatter(format_function))
+
+### --- StyleSheet --- ###
+# To check the available stylesheets, we can use plt.style.available.
+# The basic way to switch to a stylesheet is to call - plt.style.use('stylename').
+# plt.style.use() - it will change the style for the rest of the session.
+# To set the set temporarily, we can use the style context manager - plt.style.context()

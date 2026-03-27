@@ -1,4 +1,8 @@
+from sklearn.datasets import fetch_olivetti_faces
+import matplotlib.dates as mpl
+from datetime import datetime
 import matplotlib.pyplot as plt
+import pandas as pd
 import numpy as np
 import os
 os.system('clear')
@@ -408,8 +412,93 @@ x = np.linspace(0, 10, 100)
 
 # Now we will label the subplots using standard array indexing notation -
 # axes are in a two dimensional array, indexed by [row, col]
-fig, ax = plt.subplots(2, 3, sharex='col', sharey='row')
-for i in range(2):
-    for j in range(3):
-        ax[i, j].text(0.5, 0.5, str((i, j)), fontsize=18, ha='center')
+#       fig, ax = plt.subplots(2, 3, sharex='col', sharey='row')
+#       for i in range(2):
+#           for j in range(3):
+#               ax[i, j].text(0.5, 0.5, str((i, j)), fontsize=18, ha='center')
+#       plt.show()
+
+### --- plt.GridSpec() --- ###
+# plt.GridSpec() function is the interface that is recognized by the plt.subplot()
+# Example -
+#       grid = plt.GridSpec(2, 3, wspace=0.4, hspace=0.4)
+#       plt.subplot(grid[0, 0])
+#       plt.subplot(grid[0, 1:])
+#       plt.subplot(grid[1, :2])
+#       plt.subplot(grid[1, 2])
+#       plt.show()
+
+# Example : Effect of Holidays on US Births #
+#       births = pd.read_csv(
+#           'https://raw.githubusercontent.com/jakevdp/data-CDCbirths/master/births.csv')
+#       quartiles = np.percentile(births['births'], [25, 50, 75])
+#       med, stddiv = quartiles[1], 0.75 * (quartiles[2] - quartiles[0])
+#       births = births.query(
+#           '(births > @med - 5 * @stddiv) and (births < @med + 5 * @stddiv)')
+#       births = births.dropna(subset=['day'])
+#       births['day'] = births['day'].astype(int)
+#       births.index = pd.to_datetime(
+#           ((10000 * births.year) + (100 * births.month) + births.day), format='%Y%m%d')
+#       births_by_date = births.pivot_table(
+#           'births', [births.index.month, births.index.day])
+#       births_by_date.index = [datetime(2012, month, day)
+#                               for (month, day) in births_by_date.index]
+#       fig, ax = plt.subplots(figsize=(12, 4))
+#       births_by_date.plot(ax=ax)
+#       # Adding labels to the plot
+#       style = dict(size=10, color='grey')
+#       ax.text('2012-1-1', 3950, "New Year's Day", **
+#             style)  # ('Date',Births_value,label)
+#       ax.text('2012-7-4', 4250, "Independence Day", ha='center', **style)
+#       ax.text('2012-9-4', 4850, "Labour Day", ha='center', **style)
+#       ax.text('2012-10-31', 4600, "Halloween", ha='center', **style)
+#       ax.text('2012-11-25', 4450, "Thanksgiving", ha='center', **style)
+#       ax.text('2012-12-25', 3850, "Christmas", ha='right', **style)
+#
+#       # Labelling the Axes -
+#       ax.set(title='USA births by day of year', ylabel='average daily births')
+#
+#       # Format the x axis with centered month labels -
+#       # Import matplotlib.dates as mpl
+#       ax.xaxis.set_major_locator(mpl.MonthLocator())
+#       ax.xaxis.set_minor_locator(mpl.MonthLocator(bymonthday=15))
+#       ax.xaxis.set_major_formatter(plt.NullFormatter())
+#       ax.xaxis.set_minor_formatter(mpl.DateFormatter('%h'))
+#       plt.show()
+
+### --- Customizing Ticks --- ###
+# In this section,
+# We will learn to adjust the tick locations and formatting for the particular plot type.
+# Each axes has attributes xaxis and yaxis, which in turn have attributes that contains -
+# - all the properties of the lines, ticks, labels that makes up the axes.
+
+## -- Hidding Ticks or Labels -- ##
+# You can hide ticks or labels using plt.NullLocator() and plt.NullFormater().
+# Example -
+# ax.yaxis.set_major_locator(plt.NullLocator()) # Removed the ticks(labels as well)
+# ax.xaxis.set_major_formatter(plt.NullFormater()) # Removed the labels but kept gridlines.
+
+# Example -
+#       faces = fetch_olivetti_faces().images
+#
+#       fig, ax = plt.subplots(5, 5, figsize=(5, 5))
+#       fig.subplots_adjust(hspace=0, wspace=0)
+#
+#       for i in range(5):
+#           for j in range(5):
+#               ax[i, j].xaxis.set_major_locator(plt.NullLocator())
+#               ax[i, j].yaxis.set_major_locator(plt.NullLocator())
+#               ax[i, j].imshow(faces[10 * i + j], cmap='bone')
+#       plt.show()
+
+## -- Reducing or Increasing the number of Ticks -- ##
+# Example -
+#       fig, ax = plt.subplots(4, 4, sharex=True, sharey=True)
+#       plt.show()
+# To specify the maximum number of ticks , We can use plt.MaxNLocator()
+# Example -
+fig, ax = plt.subplots(4, 4, sharex=True, sharey=True)
+for axi in ax.flat:
+    axi.xaxis.set_major_locator(plt.MaxNLocator(3))
+    axi.yaxis.set_major_locator(plt.MaxNLocator(3))
 plt.show()

@@ -21,3 +21,6 @@ __pycache__/
 
 # environment variables
 .env
+
+# Folders 
+data_cleaning_app/

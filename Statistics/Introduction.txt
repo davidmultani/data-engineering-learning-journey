@@ -1,0 +1,69 @@
+# The mathematical foundation for statistics was developed in the 
+# 17th to 19th centuries based on work by thomas Bayes, Pierre-Simon Laplace,
+# and Carl Gauss.
+
+# In contrast to the purely theoretical nature of probability, statistics 
+# is an applied science concerned with analysis and modeling of data.
+
+# First step in any data science project:
+# exploring the data. Exploratory data analysis, or EDA
+
+# Classical statistics focused almost exclusively on inference,
+# a sometimes complex set of procedures for drawing conclusions about 
+# large populations based on small samples.
+
+# In 1962, John W. Tukey proposed a new scientific discipline called 
+# data analysis that included statistical inference as just a component.
+
+# Tukey forged links to the engineering and computer science communities
+# (he coined the terms bit, short for binary digit, and software).
+
+# With the ready availability of computing power and expressive 
+# data analysis software, exploratory data analysis has evolved well beyond
+# its original scope.
+
+### --- Elements of Structured Data --- ###
+# Data comes from many sources: sensor measurements, events, text, images, and videos.
+# The Internet of Things (IOT) is spewing out streams of information.
+
+# Much of this data is unstructured: images are a collection of pixels
+# with each pixel containing RGB (red, green, blue) color information.
+
+# Texts are sequences of words and nonword characters, often organized by 
+# sections, subsections, and so on.
+
+# Clickstreams are sequences of actions by a user interacting with 
+# an app or web page.
+
+# A major challenge of data science is to harness this torrent of 
+# raw data into actionable information.
+
+# To apply the statistical concepts Unstructured raw data must be processed
+# and manipulated into a structured form 
+
+## KEY TERMS FOR DATA TYPES ##
+# Continous - 
+# - Data that can take on any value in an interval.
+# Synonyms - interval, float, numeric
+
+# Discrete - 
+# - Data that can take on only integer values, such as counts.
+# Synonyms - integer, count
+
+# Categorical - 
+# - Data that can take on only a specific set of values representing
+# a set of possible categories.
+# Synonyms - enums, enumerated, factors, nominal, polychotomous
+
+# Binary - 
+# A special case of categorical data with just two categories of values
+# (0/1,True/False)
+# Synonyms - dichotomous, logical, indicator, boolean
+
+# Ordinal - 
+# Categorical data that has an explicit ordering.
+# Synonyms - ordered factor
+
+
+ 
+
